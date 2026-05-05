@@ -1,27 +1,9 @@
-const fs = require("fs");
-const path = require("path");
 const assert = require("assert");
 const { By, until } = require("selenium-webdriver");
 
 const WebDriverUtil = require("../../../utils/WebDriverUtil");
 const HomePage = require("../../../pages/Homepage");
 const LoginPage = require("../../../pages/LoginPage");
-
-const SCREENSHOT_PATH = path.join(
-  process.cwd(),
-  "evidence",
-  "screenshots",
-  "TC02.png"
-);
-
-async function saveScreenshot(driver) {
-  fs.mkdirSync(path.dirname(SCREENSHOT_PATH), { recursive: true });
-
-  const image = await driver.takeScreenshot();
-  fs.writeFileSync(SCREENSHOT_PATH, image, "base64");
-
-  console.log(`Evidence: ${SCREENSHOT_PATH}`);
-}
 
 // Kiểm tra form đăng nhập bằng email hiển thị
 async function TC002() {
@@ -70,9 +52,6 @@ async function TC002() {
 
     const isPasswordDisplayed = await passwordInput.isDisplayed();
 
-    // Chụp 1 ảnh minh chứng
-    await saveScreenshot(driver);
-
     assert(
       visibleInputCount >= 2 && isPasswordDisplayed,
       "TC002 FAIL: Form đăng nhập bằng email không hiển thị đủ ô nhập liệu."
@@ -81,11 +60,6 @@ async function TC002() {
     console.log("TC002 PASS: Form đăng nhập bằng email hiển thị đúng.");
   } catch (error) {
     console.error("TC002 FAIL:", error.message);
-
-    if (driver) {
-      await saveScreenshot(driver);
-    }
-
     process.exitCode = 1;
   } finally {
     if (driver) {

@@ -1,5 +1,3 @@
-const fs = require("fs");
-const path = require("path");
 const assert = require("assert");
 const { By, until } = require("selenium-webdriver");
 
@@ -7,15 +5,6 @@ const WebDriverUtil = require("../../../utils/WebDriverUtil");
 const config = require("../../../config/config");
 
 const CATEGORY_URL = "https://tiki.vn/nha-sach-tiki/c8322";
-const SCREENSHOT_PATH = path.join(
-  __dirname,
-  "../../../evidence/screenshots/TC024.png"
-);
-
-async function saveScreenshot(driver) {
-  fs.mkdirSync(path.dirname(SCREENSHOT_PATH), { recursive: true });
-  fs.writeFileSync(SCREENSHOT_PATH, await driver.takeScreenshot(), "base64");
-}
 
 async function TC024() {
   const webDriverUtil = new WebDriverUtil();
@@ -70,27 +59,25 @@ async function TC024() {
     await maxPriceInput.clear();
     await maxPriceInput.sendKeys("100000");
 
-   const actualValue = await maxPriceInput.getAttribute("value");
-await saveScreenshot(driver);
+    const actualValue = await maxPriceInput.getAttribute("value");
+    const normalizedValue = actualValue.replace(/\D/g, "");
 
-const normalizedValue = actualValue.replace(/\D/g, "");
+    assert.strictEqual(
+      normalizedValue,
+      "100000",
+      `TC024 FAIL: Ô giá tối đa không xử lý đúng giá trị 100000. Actual = "${actualValue}"`
+    );
 
-assert.strictEqual(
-  normalizedValue,
-  "100000",
-  `TC024 FAIL: Ô giá tối đa không xử lý đúng giá trị 100000. Actual = "${actualValue}"`
-);
-
-console.log(
-  `TC024 PASS: Hệ thống chấp nhận và định dạng giá tối đa thành ${actualValue}.`
-);
-console.log(`Evidence: ${SCREENSHOT_PATH}`);
+    console.log(
+      `TC024 PASS: Hệ thống chấp nhận và định dạng giá tối đa thành ${actualValue}.`
+    );
   } catch (error) {
-    if (driver) await saveScreenshot(driver);
-    console.error("Lỗi trong TC024:", error.stack);
+    console.error("TC024 FAIL:", error.message);
     process.exitCode = 1;
   } finally {
-    await webDriverUtil.quit();
+    if (driver) {
+      await webDriverUtil.quit();
+    }
   }
 }
 

@@ -1,5 +1,3 @@
-const fs = require("fs");
-const path = require("path");
 const assert = require("assert");
 const { By, until } = require("selenium-webdriver");
 
@@ -7,15 +5,6 @@ const WebDriverUtil = require("../../../utils/WebDriverUtil");
 const config = require("../../../config/config");
 
 const CATEGORY_URL = "https://tiki.vn/nha-sach-tiki/c8322";
-const SCREENSHOT_PATH = path.join(
-  __dirname,
-  "../../../evidence/screenshots/TC025.png"
-);
-
-async function saveScreenshot(driver) {
-  fs.mkdirSync(path.dirname(SCREENSHOT_PATH), { recursive: true });
-  fs.writeFileSync(SCREENSHOT_PATH, await driver.takeScreenshot(), "base64");
-}
 
 async function TC025() {
   const webDriverUtil = new WebDriverUtil();
@@ -73,8 +62,6 @@ async function TC025() {
     const actualValue = await minPriceInput.getAttribute("value");
     const normalizedValue = actualValue.replace(/\D/g, "");
 
-    await saveScreenshot(driver);
-
     assert.strictEqual(
       normalizedValue,
       "2",
@@ -82,13 +69,13 @@ async function TC025() {
     );
 
     console.log("TC025 PASS: Hệ thống chấp nhận giá tối thiểu bằng 2.");
-    console.log(`Evidence: ${SCREENSHOT_PATH}`);
   } catch (error) {
-    if (driver) await saveScreenshot(driver);
-    console.error("Lỗi trong TC025:", error.stack);
+    console.error("TC025 FAIL:", error.message);
     process.exitCode = 1;
   } finally {
-    await webDriverUtil.quit();
+    if (driver) {
+      await webDriverUtil.quit();
+    }
   }
 }
 

@@ -1,26 +1,8 @@
-const fs = require("fs");
-const path = require("path");
 const assert = require("assert");
 
 const WebDriverUtil = require("../../../utils/WebDriverUtil");
 const HomePage = require("../../../pages/Homepage");
 const LoginPage = require("../../../pages/LoginPage");
-
-const SCREENSHOT_PATH = path.join(
-  process.cwd(),
-  "evidence",
-  "screenshots",
-  "TC03.png"
-);
-
-async function saveScreenshot(driver) {
-  fs.mkdirSync(path.dirname(SCREENSHOT_PATH), { recursive: true });
-
-  const image = await driver.takeScreenshot();
-  fs.writeFileSync(SCREENSHOT_PATH, image, "base64");
-
-  console.log(`Evidence: ${SCREENSHOT_PATH}`);
-}
 
 // Đăng nhập thất bại với số điện thoại sai định dạng
 async function TC003() {
@@ -50,22 +32,14 @@ async function TC003() {
     // Bước 4: Kiểm tra thông báo lỗi
     const hasError = await loginPage.checkPhoneNumberError();
 
-    // Chụp 1 ảnh minh chứng
-    await saveScreenshot(driver);
-
     assert(
       hasError,
       "TC003 FAIL: Không hiển thị lỗi khi nhập số điện thoại sai định dạng."
     );
 
-    console.log("TC004 PASS: Hệ thống hiển thị lỗi số điện thoại sai định dạng.");
+    console.log("TC003 PASS: Hệ thống hiển thị lỗi số điện thoại sai định dạng.");
   } catch (error) {
     console.error("TC003 FAIL:", error.message);
-
-    if (driver) {
-      await saveScreenshot(driver);
-    }
-
     process.exitCode = 1;
   } finally {
     if (driver) {
