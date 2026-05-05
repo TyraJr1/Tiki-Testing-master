@@ -1,0 +1,38 @@
+{
+  "name": "tiki-testing",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "node ./src/index.test.js",
+    "tc01": "node ./src/tests/authentication/TC01.js",
+    "tc01:fast": "set TC_FAST=1&& node ./src/tests/authentication/TC01.js",
+    "tc02": "node ./src/tests/authentication/TC02.js",
+    "tc03": "node ./src/tests/authentication/TC03.js",
+    "tc06": "node ./src/tests/authentication/TC06.js",
+    "tc07": "node ./src/tests/authentication/TC07.js",
+    "tc011": "node ./src/tests/cart/TC011.js",
+    "tc021": "node ./src/tests/product-filters/TC021.js",
+    "tc022": "node ./src/tests/product-filters/TC022.js",
+    "tc023": "node ./src/tests/product-filters/TC023.js",
+    "tc024": "node ./src/tests/product-filters/TC024.js",
+    "tc025": "node ./src/tests/product-filters/TC025.js",
+    "tc026": "node ./src/tests/product-filters/TC026.js",
+    "tc027": "node ./src/tests/product-filters/TC027.js",
+    "tc028": "node ./src/tests/product-filters/TC028.js",
+    "tc:all": "npm run tc01 && npm run tc02 && npm run tc03 && npm run tc06 && npm run tc07 && npm run tc011 && npm run tc021 && npm run tc022 && npm run tc023 && npm run tc024 && npm run tc025 && npm run tc026 && npm run tc027 && npm run tc028"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "chromedriver": "^135.0.2",
+    "dotenv": "^16.5.0",
+    "selenium-webdriver": "^4.31.0"
+  },
+  "devDependencies": {
+    "chai": "^6.2.2",
+    "mocha": "^11.7.5",
+    "mochawesome": "^7.1.4"
+  }
+}

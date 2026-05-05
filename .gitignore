@@ -1,0 +1,9 @@
+# Ignore node_modules
+node_modules/
+
+# Optional: Ignore other common files
+.DS_Store       # macOS system files
+*.log           # Log files
+*.env           # Environment variables files
+config.json    # Configuration files
+.env
